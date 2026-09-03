@@ -20,7 +20,6 @@ class Solution {
             Arrays.sort(answer);
             result[x] = answer[k - 1];
         }
-       
         return result;
     }
 }

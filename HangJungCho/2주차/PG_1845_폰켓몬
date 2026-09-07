@@ -1,0 +1,9 @@
+#include <vector>
+#include <set>
+using namespace std;
+
+int solution(vector<int> nums)
+{
+    set <int> a(nums.begin(),nums.end()); // 최대경우의 수만 구하면 되므로 set에 보관
+    return min(a.size(), nums.size()/2); // a는 중복을 허용하지 않으므로 a의 개수 or 주어진 폰켓몬 개수/2중 작은 수가 최대로 가져 갈 수 있는 종류
+}

@@ -1,0 +1,21 @@
+import java.util.*;
+
+
+
+class Solution {
+
+    public String solution(String[] participant, String[] completion) {
+
+        String answer = "";
+        List<String> list = new ArrayList<>(Arrays.asList(completion));
+
+        for (int i = 0; i < participant.length; i++) {
+            if (!list.contains(participant[i])) {
+                answer = participant[i];
+                break;
+            }
+            list.remove(participant[i]); 
+        }
+        return answer;
+    }
+}

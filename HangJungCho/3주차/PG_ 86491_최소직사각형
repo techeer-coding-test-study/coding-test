@@ -1,0 +1,22 @@
+#include <string>
+#include <vector>
+#include <cmath>
+
+using namespace std;
+
+int solution(vector<vector<int>> sizes) {
+    int first = max(sizes[0][0], sizes[0][1]);
+    int second = min(sizes[0][0], sizes[0][1]);
+    for(int i =1;i<sizes.size();i++){
+        if(first < max(sizes[i][0], sizes[i][1])){
+            first = max(sizes[i][0], sizes[i][1]);
+        }
+        if(second < min(sizes[i][0], sizes[i][1])){
+            second = min(sizes[i][0], sizes[i][1]);
+        }
+    }
+
+    return first * second;
+}
+
+//시간복잡도 O(N)

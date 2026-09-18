@@ -1,0 +1,54 @@
+#include <string>
+#include <vector>
+#include <map>
+#include<iostream>
+#include <sstream>
+#include <algorithm>
+
+using namespace std;
+
+vector<int> solution(vector<string> id_list, vector<string> report, int k) {
+    vector<int> answer;
+    vector<string> alert_a;
+    map<string,int>alert;
+    map<string,int>mem;
+
+    sort(report.begin(), report.end());
+    report.erase(unique(report.begin(), report.end()), report.end());
+
+    for(int i =0;i < id_list.size();i++){// 신고 누적 횟수 저장
+        alert[id_list[i]] = 0;
+        mem[id_list[i]] = 0;
+    }
+
+    for(int i =0;i<report.size();i++){
+        stringstream ss(report[i]);
+        string reporter, reported;
+        ss >> reporter >> reported;
+        alert[reported]++;
+    }
+
+    for(int i =0;i < id_list.size();i++){// 신고 누적 횟수 저장
+        if(alert[id_list[i]] >= k){
+            alert_a.push_back(id_list[i]);
+        }
+    }
+    for(int i =0;i<report.size();i++){
+        stringstream ss(report[i]);
+        string reporter, reported;
+        ss >> reporter >> reported;
+        for(int j =0;j<alert_a.size();j++){
+            if(reported == alert_a[j]){
+                mem[reporter]++;
+            }
+        }
+    }
+
+    for(int i =0;i<id_list.size();i++){
+        answer.push_back(mem[id_list[i]]);
+    }
+    return answer;
+
+}
+
+// 코드 풀이 -> O(M*N)이므로 시간초과 가능성 있음

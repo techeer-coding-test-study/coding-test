@@ -1,0 +1,48 @@
+import java.util.HashMap;
+
+class Solution {
+    public String solution(String[] survey, int[] choices) {
+        // 1. 성격 유형별 점수를 저장할 맵 생성
+        HashMap<Character, Integer> scores = new HashMap<>();
+        
+        // 초기 점수 0으로 설정
+        char[] types = {'R', 'T', 'C', 'F', 'J', 'M', 'A', 'N'};
+        for (char t : types) {
+            scores.put(t, 0);
+        }
+        
+        // 2. 설문조사 결과를 바탕으로 점수 계산
+        for (int i = 0; i < survey.length; i++) {
+            char disagreeType = survey[i].charAt(0); // 비동의 관련 유형 (1~3번 선택지)
+            char agreeType = survey[i].charAt(1);    // 동의 관련 유형 (5~7번 선택지)
+            int choice = choices[i];
+            
+            if (choice < 4) {
+                // 1, 2, 3번 선택지 (비동의) -> 앞쪽 문자(disagreeType)에 점수 부여
+                // 3점, 2점, 1점 순으로 점수가 높음
+                int score = 4 - choice;
+                scores.put(disagreeType, scores.get(disagreeType) + score);
+            } else if (choice > 4) {
+                // 5, 6, 7번 선택지 (동의) -> 뒤쪽 문자(agreeType)에 점수 부여
+                // 1점, 2점, 3점 순으로 점수가 높음
+                int score = choice - 4;
+                scores.put(agreeType, scores.get(agreeType) + score);
+            }
+            // choice == 4 (모름/어중간함)인 경우는 점수가 0점이므로 무시
+        }
+        
+        // 3. 지표별로 점수를 비교하여 성격 유형 조합하기
+        StringBuilder answer = new StringBuilder();
+        
+        // 1번째 지표: R vs T
+        answer.append(scores.get('R') >= scores.get('T') ? 'R' : 'T');
+        // 2번째 지표: C vs F
+        answer.append(scores.get('C') >= scores.get('F') ? 'C' : 'F');
+        // 3번째 지표: J vs M
+        answer.append(scores.get('J') >= scores.get('M') ? 'J' : 'M');
+        // 4번째 지표: A vs N
+        answer.append(scores.get('A') >= scores.get('N') ? 'A' : 'N');
+        
+        return answer.toString();
+    }
+}

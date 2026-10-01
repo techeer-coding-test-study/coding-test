@@ -1,0 +1,25 @@
+class Solution {
+    public String solution(String[] cards1, String[] cards2, String[] goal) {
+        int answer = 0;
+        int cards1_pos = 0;
+        int cards2_pos = 0;
+        
+        for (int i=0; i<goal.length; i++){
+          
+            if(cards1_pos < cards1.length && cards1[cards1_pos].equals(goal[i])){
+                cards1_pos++;
+            }
+            else{
+                if(cards2_pos < cards2.length && cards2[cards2_pos].equals(goal[i])){
+                    cards2_pos++;
+                }
+              
+                else{
+                    answer++;
+                }
+            }
+        }
+            
+        return answer > 0 ? "No" : "Yes";
+    }
+}

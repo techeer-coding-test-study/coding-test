@@ -1,0 +1,34 @@
+def solution(p):
+    if p == '':
+        return ''
+    
+    count = 0
+    
+    for i in range(len(p)):
+        if p[i] == '(':
+            count += 1
+        else:
+            count -= 1
+        if count == 0:
+            u = p[:i+1]
+            v = p[i+1:]
+            break
+    
+    stack = []
+    flag = 0
+    for ch in u:
+        if ch == '(':
+            stack.append(ch)
+        else:
+            if not stack:
+                flag += 1
+                break
+            stack.pop()
+            
+    if flag == 0 and len(stack) == 0:
+        return u + solution(v)
+    
+    answer = '(' + solution(v) + ')'
+    answer += ''.join(')' if ch == '(' else '(' for ch in u[1:-1])
+    
+    return answer

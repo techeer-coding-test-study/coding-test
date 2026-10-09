@@ -1,0 +1,53 @@
+#include <string>
+#include <vector>
+#include <map>
+
+using namespace std;
+string ANS(map<char,int>a){
+    string ans = "";
+    if(a['R'] >= a['T']){
+        ans.append("R");
+    }
+    else{
+        ans.append("T");
+    }
+    
+    if(a['C'] >= a['F']){
+        ans.append("C");
+    }
+    else{
+        ans.append("F");
+    }
+    if(a['J'] >= a['M']){
+        ans.append("J");
+    }
+    else{
+        ans.append("M");
+    }
+    if(a['A'] >= a['N']){
+        ans.append("A");
+    }
+    else{
+        ans.append("N");
+    }
+    return ans;
+}
+    
+
+
+string solution(vector<string> survey, vector<int> choices) {
+    //string에서 앞뒤 중 가져오기
+    //점수 체크 후 3보다 크면 -> 뒤에꺼 가져오기 작으면 -> 앞에꺼 가져오기
+    string ans = "";
+    map<char,int> a;
+
+    for(int i =0;i<choices.size();i++){
+        if(choices[i] > 4){// 크면 뒤에꺼
+            a[survey[i].back()] += choices[i] - 4; 
+        }
+        else if(choices[i] < 4){//작으면 앞에꺼
+            a[survey[i].front()] += 4 - choices[i];
+        }
+    }
+    return ANS(a);
+}

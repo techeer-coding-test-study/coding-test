@@ -1,0 +1,48 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+string tohex(int a, int n){
+    string ans = "";
+    int b = a;
+    int count = 1;
+    for(int i = 0; i <n-1; i++){
+        count *= 2;
+    }
+    for(int z = count; z > 0; z = z/2)
+        if(b >= z){
+            b -= z;
+            ans.push_back('1');
+        }
+        else{
+            ans.push_back('0');
+        }
+    return ans;
+}
+
+string ANS(string arr1, string arr2){
+    string a ="";
+    for(int i =0;i<arr1.size();i++){
+        if(arr1[i] == '1' || arr2[i] == '1'){
+            a.push_back('#');
+        }
+        else{
+            a.push_back(' ');
+        }
+    }
+    return a;
+}
+
+vector<string> solution(int n, vector<int> arr1, vector<int> arr2) {
+    vector<string> answer(arr1.size());
+    vector<string> ARR1(arr1.size());;
+    vector<string> ARR2(arr2.size());;
+    for(int i =0; i < arr1.size(); i++){
+        ARR1[i] = tohex(arr1[i], n);
+        ARR2[i] = tohex(arr2[i], n);
+    }
+    for(int i =0; i< ARR1.size();i++){
+        answer[i] = ANS(ARR1[i],ARR2[i]);
+    }
+    return answer;
+}

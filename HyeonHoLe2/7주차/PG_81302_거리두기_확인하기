@@ -1,0 +1,43 @@
+class Solution {
+    public int[] solution(String[][] places) {
+        int[] answer = new int[places.length];
+
+        for (int t = 0; t < places.length; t++) {
+            String[] place = places[t];
+            boolean safe = true;
+
+            for (int r1 = 0; r1 < 5 && safe; r1++) {
+                for (int c1 = 0; c1 < 5 && safe; c1++) {
+                    if (place[r1].charAt(c1) != 'P') continue;
+
+                    for (int r2 = 0; r2 < 5 && safe; r2++) {
+                        for (int c2 = 0; c2 < 5 && safe; c2++) {
+                            if (r1 == r2 && c1 == c2) continue;
+                            if (place[r2].charAt(c2) != 'P') continue;
+
+                            int dist = Math.abs(r1 - r2) + Math.abs(c1 - c2);
+                            if (dist > 2) continue;
+
+                            if (dist == 1) {
+                                safe = false;
+                            } else if (r1 == r2) {
+                               
+                                if (place[r1].charAt((c1 + c2) / 2) != 'X') safe = false;
+                            } else if (c1 == c2) {
+                               
+                                if (place[(r1 + r2) / 2].charAt(c1) != 'X') safe = false;
+                            } else {
+                                
+                                if (place[r1].charAt(c2) != 'X' || place[r2].charAt(c1) != 'X') safe = false;
+                            }
+                        }
+                    }
+                }
+            }
+
+            answer[t] = safe ? 1 : 0;
+        }
+
+        return answer;
+    }
+}

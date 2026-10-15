@@ -1,0 +1,26 @@
+class Solution {
+    public int countDominantNodes(TreeNode root) {
+        // 완전 이진 트리라 레벨 순서로 담으면 i번 노드의 자식은 2i+1, 2i+2
+        List<TreeNode> nodes = new ArrayList<>();
+        nodes.add(root);
+        for (int i = 0; i < nodes.size(); i++) {
+            TreeNode cur = nodes.get(i);
+            if (cur.left != null) nodes.add(cur.left);
+            if (cur.right != null) nodes.add(cur.right);
+        }
+
+        int n = nodes.size();
+        int[] subMax = new int[n];
+        int count = 0;
+        // 뒤에서부터 보면 자식이 항상 부모보다 먼저 계산된다 (후위 순회 효과)
+        for (int i = n - 1; i >= 0; i--) {
+            int val = nodes.get(i).val;
+            int max = val;
+            if (2 * i + 1 < n) max = Math.max(max, subMax[2 * i + 1]);
+            if (2 * i + 2 < n) max = Math.max(max, subMax[2 * i + 2]);
+            subMax[i] = max;
+            if (val == max) count++;
+        }
+        return count;
+    }
+}

@@ -1,0 +1,63 @@
+def Man(p1, p2):
+    return abs(p1[0] - p2[0]) + abs(p1[1] - p2[1])
+
+def solution(places):
+    answer = []
+    for i in range(5):
+        location = []
+        for j in range(5):
+            place = places[i][j]
+            for k in range(5):
+                if(place[k] == "P"):
+                    loc = []
+                    loc.append(j)
+                    loc.append(k)
+                    location.append(loc)
+        is_safe = 1
+        
+        # 2. 응시자 쌍끼리 맨해튼 거리 확인
+        for z in range(len(location)):
+            for x in range(z + 1, len(location)):
+                p1 = location[z]
+                p2 = location[x]
+                dist = Man(p1, p2)
+                
+                # 맨해튼 거리가 1이면 무조건 위반
+                if dist == 1:
+                    is_safe = 0
+                    break
+                
+                # 맨해튼 거리가 2인 경우 파티션(X) 확인
+                elif dist == 2:
+                    r1, c1 = p1[0], p1[1]
+                    r2, c2 = p2[0], p2[1]
+                    
+                    # 같은 행에 있는 경우 (가로로 2칸 차이)
+                    if r1 == r2:
+                        mid_c = (c1 + c2) // 2
+                        if places[i][r1][mid_c] != "X":
+                            is_safe = 0
+                            break
+                    
+                    # 같은 열에 있는 경우 (세로로 2칸 차이)
+                    elif c1 == c2:
+                        mid_r = (r1 + r2) // 2
+                        if places[i][mid_r][c1] != "X":
+                            is_safe = 0
+                            break
+                    
+                    # 대각선 위치에 있는 경우 (두 지점 모두 파티션이어야 함)
+                    else:
+                        if places[i][r1][c2] != "X" or places[i][r2][c1] != "X":
+                            is_safe = 0
+                            break
+            
+            # 위반이 발견되면 더 이상 다른 쌍을 볼 필요 없이 중단
+            if is_safe == 0:
+                break
+        
+        answer.append(is_safe)
+                
+                    
+    
+    return answer

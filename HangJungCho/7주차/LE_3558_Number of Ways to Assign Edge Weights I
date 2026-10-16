@@ -1,0 +1,17 @@
+class Solution:
+    def assignEdgeWeights(self, edges: List[List[int]]) -> int:
+        MOD = 1000000000+7
+        graph = defaultdict(list)
+        for u, v in edges:
+            graph[u].append(v)
+            graph[v].append(u)
+        
+        def dfs(current, parent,graph): 
+            depth = 0
+            for neighbor in graph[current]:
+                if neighbor != parent:
+                    # 자식 노드들 중 가장 깊은 값을 찾아 1을 더함
+                    depth = max(depth, 1 + dfs(neighbor, current,graph))
+            return depth
+        max_depth = dfs(1,-1,graph)
+        return pow(2, max_depth - 1, MOD)

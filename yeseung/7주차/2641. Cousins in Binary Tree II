@@ -1,0 +1,57 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+
+void sum_depth(TreeNode* node, vector<int>& list , int depth){
+    if(list.size()<=depth+1){
+        list.push_back(0);
+    }
+    list[depth] += node->val;
+
+    if(node->left != nullptr ){
+        sum_depth(node->left, list, depth+1);
+    }
+    
+    if(node->right != nullptr){
+        sum_depth(node->right, list, depth+1);
+    }
+
+    return;
+    
+}
+
+void cal_depth(TreeNode* node, vector<int>& list, int depth, int sum){
+    node->val = sum;
+    int next_sum = list[depth+1];
+    if(node->left!=nullptr){
+        next_sum -= node->left->val;
+    }
+    if(node->right!=nullptr){
+        next_sum -= node->right->val;
+    }
+    
+    if(node->left!=nullptr){
+        cal_depth(node->left, list, depth+1, next_sum);
+    }
+    if(node->right!=nullptr){
+        cal_depth(node->right, list, depth+1, next_sum);
+    }
+}
+  
+public:
+    TreeNode* replaceValueInTree(TreeNode* root) {
+        vector<int> sum_list;
+        sum_depth(root, sum_list, 0);
+        cal_depth(root, sum_list, 0, 0);
+        return root;
+    }
+};

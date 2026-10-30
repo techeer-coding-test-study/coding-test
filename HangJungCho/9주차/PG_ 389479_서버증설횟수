@@ -1,0 +1,23 @@
+def solution(players, m, k):
+    #포인트 k 지속시간
+    # i + k로 리스트에 넣어놓기
+    server_count = 0
+    k_count = 0
+    k_durable = []
+    for i in range(len(players)):
+        
+        expired = k_durable.count(i)
+        if expired > 0:
+            server_count -= expired
+            k_durable = [j for j in k_durable if j != i]
+        
+        p = players[i] // m
+        
+        while p > server_count:
+            server_count += 1
+            k_count += 1
+            k_durable.append(i + k)
+                
+        
+    return k_count
+

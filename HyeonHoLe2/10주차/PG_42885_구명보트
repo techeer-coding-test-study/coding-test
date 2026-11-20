@@ -1,0 +1,30 @@
+import java.util.Collections;
+import java.util.PriorityQueue;
+
+class Solution {
+    public int solution(int[] people, int limit) {
+        PriorityQueue<Integer> heavy = new PriorityQueue<>(Collections.reverseOrder());
+        PriorityQueue<Integer> light = new PriorityQueue<>();                      
+
+        for (int p : people) {
+            heavy.add(p);
+            light.add(p);
+        }
+
+        int left = people.length;
+        int answer = 0;
+
+        while (left > 0) {
+            int h = heavy.poll();
+            left--;
+
+            if (left > 0 && h + light.peek() <= limit) { 
+                light.poll();
+                left--;
+            }
+            answer++; 
+        }
+
+        return answer;
+    }
+}

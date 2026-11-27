@@ -1,0 +1,33 @@
+def dfs(curr, sheep, wolf, next_nodes, info, tree):
+    if info[curr] == 0:
+        sheep += 1
+    else:
+        wolf += 1
+        
+    if sheep <= wolf:
+        return 0  # 실패한 경로는 0을 반환
+        
+    # 현재까지 모은 양의 수를 기본 최댓값으로 설정
+    best = sheep
+    
+    candidates = []
+    for node in next_nodes:
+        if node != curr:
+            candidates.append(node)
+            
+    for child in tree[curr]:
+        candidates.append(child)
+        
+    # 자식 경로들 중 가장 큰 양의 수를 반환받아 갱신
+    for nxt in candidates:
+        best = max(best, dfs(nxt, sheep, wolf, candidates, info, tree))
+        
+    return best
+
+def solution(info, edges):
+    n = len(info)
+    tree = [[] for i in range(n)]
+    for parent, child in edges:
+        tree[parent].append(child)
+        
+    return dfs(0, 0, 0, [0], info, tree)

@@ -1,0 +1,28 @@
+def dfs(curr, visited, blocked, graph):
+    visited[curr] = True
+    count = 1  # 현재 노드(나 자신) 1개 카운트
+    
+    for nxt in graph[curr]:
+        # 끊어진 전선 방향이거나 이미 방문했다면 패스
+        if nxt == blocked or visited[nxt]:
+            continue
+        # 연결된 자식 쪽의 노드 개수를 전부 더함
+        count += dfs(nxt, visited, blocked, graph)
+        
+    return count
+
+def solution(n, wires):
+    graph = [[] for _ in range(n + 1)]
+    for v1, v2 in wires:
+        graph[v1].append(v2)
+        graph[v2].append(v1)
+        
+    min_diff = n
+    
+    for v1, v2 in wires:
+        visited = [False] * (n + 1)
+        # v1에서 시작하고 v2 방향만 막은 채로 개수 세기
+        count = dfs(v1, visited, v2, graph)
+        min_diff = min(min_diff, abs(n - 2 * count))
+        
+    return min_diff

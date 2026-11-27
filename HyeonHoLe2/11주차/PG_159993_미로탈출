@@ -1,0 +1,49 @@
+import java.util.*;
+
+class Solution {
+    public int solution(String[] maps) {
+        int n = maps.length, m = maps[0].length();
+        int[] dr = {-1, 1, 0, 0};
+        int[] dc = {0, 0, -1, 1};
+
+        int[] s = null, l = null, e = null;
+        for (int r = 0; r < n; r++) {
+            for (int c = 0; c < m; c++) {
+                char ch = maps[r].charAt(c);
+                if (ch == 'S') s = new int[]{r, c};
+                else if (ch == 'L') l = new int[]{r, c};
+                else if (ch == 'E') e = new int[]{r, c};
+            }
+        }
+
+        int[][] starts = {s, l};
+        int[][] goals = {l, e};
+        int answer = 0;
+
+        for (int k = 0; k < 2; k++) {
+            int[][] dist = new int[n][m];        
+            for (int[] row : dist) Arrays.fill(row, -1);
+
+            Deque<int[]> queue = new ArrayDeque<>();
+            queue.offer(starts[k]);
+            dist[starts[k][0]][starts[k][1]] = 0;
+
+            while (!queue.isEmpty()) {
+                int[] cur = queue.poll();
+                for (int d = 0; d < 4; d++) {
+                    int nr = cur[0] + dr[d], nc = cur[1] + dc[d];
+                    if (nr < 0 || nc < 0 || nr >= n || nc >= m) continue;   
+                    if (maps[nr].charAt(nc) == 'X') continue;         
+                    if (dist[nr][nc] != -1) continue;                    
+                    dist[nr][nc] = dist[cur[0]][cur[1]] + 1;
+                    queue.offer(new int[]{nr, nc});
+                }
+            }
+
+            int d = dist[goals[k][0]][goals[k][1]];
+            if (d == -1) return -1;                
+            answer += d;
+        }
+        return answer;
+    }
+}

@@ -1,0 +1,42 @@
+import java.util.*;
+
+class Solution {
+    public int[] solution(String[] maps) {
+        int n = maps.length, m = maps[0].length();
+        int[] dr = {-1, 1, 0, 0};
+        int[] dc = {0, 0, -1, 1};
+        boolean[][] visited = new boolean[n][m];
+        List<Integer> days = new ArrayList<>();
+
+        for (int r = 0; r < n; r++) {
+            for (int c = 0; c < m; c++) {
+                if (maps[r].charAt(c) == 'X' || visited[r][c]) continue;
+    
+                int sum = 0;
+                Deque<int[]> queue = new ArrayDeque<>();
+                queue.offer(new int[]{r, c});
+                visited[r][c] = true;
+
+                while (!queue.isEmpty()) {
+                    int[] cur = queue.poll();
+                    sum += maps[cur[0]].charAt(cur[1]) - '0';   
+                    for (int d = 0; d < 4; d++) {
+                        int nr = cur[0] + dr[d], nc = cur[1] + dc[d];
+                        if (nr < 0 || nc < 0 || nr >= n || nc >= m) continue;  
+                        if (maps[nr].charAt(nc) == 'X') continue;              
+                        if (visited[nr][nc]) continue;                         
+                        visited[nr][nc] = true;
+                        queue.offer(new int[]{nr, nc});
+                    }
+                }
+                days.add(sum);
+            }
+        }
+
+        if (days.isEmpty()) return new int[]{-1};
+        Collections.sort(days);
+        int[] answer = new int[days.size()];
+        for (int i = 0; i < answer.length; i++) answer[i] = days.get(i);
+        return answer;
+    }
+}
